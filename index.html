@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Digital Notice Board — Login</title>
+  <meta name="description" content="Digital Notice Board System — Login or create an account to access notices, updates, and more."/>
+  <link rel="stylesheet" href="css/main.css"/>
+  <link rel="stylesheet" href="css/auth.css"/>
+  <link rel="manifest" href="manifest.json"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>"/>
+</head>
+<body>
+
+<!-- Floating Particles -->
+<div class="auth-particles" id="authParticles"></div>
+
+<!-- Theme Toggle (top right) -->
+<button class="icon-btn" id="themeToggleAuth" title="Toggle Dark/Light Mode"
+  style="position:fixed;top:16px;right:16px;z-index:999;background:var(--surface);border:1.5px solid var(--border);">
+  🌙
+</button>
+
+<div class="auth-page">
+  <!-- LEFT PANEL -->
+  <div class="auth-left">
+    <div class="auth-decor auth-decor-1"></div>
+    <div class="auth-decor auth-decor-2"></div>
+    <div class="auth-decor auth-decor-3"></div>
+
+    <div class="auth-brand">
+      <div class="auth-logo">📋</div>
+      <h1>NoticeBoard Pro</h1>
+      <p>The smarter way to manage & share notices, announcements, and updates across your organization.</p>
+    </div>
+
+    <div class="auth-features">
+      <div class="auth-feature-item">
+        <div class="auth-feature-icon">⚡</div>
+        <div class="auth-feature-text">
+          <h4>Real-Time Updates</h4>
+          <p>Notices appear instantly for all users</p>
+        </div>
+      </div>
+      <div class="auth-feature-item">
+        <div class="auth-feature-icon">🔐</div>
+        <div class="auth-feature-text">
+          <h4>Role-Based Access</h4>
+          <p>Admin, Staff & User access controls</p>
+        </div>
+      </div>
+      <div class="auth-feature-item">
+        <div class="auth-feature-icon">📊</div>
+        <div class="auth-feature-text">
+          <h4>Analytics Dashboard</h4>
+          <p>Track engagement, views & trends</p>
+        </div>
+      </div>
+      <div class="auth-feature-item">
+        <div class="auth-feature-icon">🔔</div>
+        <div class="auth-feature-text">
+          <h4>Smart Notifications</h4>
+          <p>Push, Email & SMS alerts</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="auth-right">
+    <div class="auth-form-container">
+      <h2>Welcome Back! 👋</h2>
+      <p class="auth-subtitle" id="authSubtitle">Sign in to access your notice board</p>
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="loginTab" onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab" id="signupTab" onclick="switchTab('signup')">Create Account</button>
+      </div>
+
+      <!-- Error/Success Messages -->
+      <div id="authMsg" class="hidden"></div>
+
+      <!-- LOGIN FORM -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <div class="input-icon-wrap">
+            <span class="icon">✉️</span>
+            <input type="email" id="loginEmail" class="form-control" placeholder="Enter your email" required autocomplete="email"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="password-wrap">
+            <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password" required autocomplete="current-password"/>
+            <button type="button" class="eye-toggle" onclick="toggleEye('loginPassword', this)">👁️</button>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--text-muted);cursor:pointer;">
+            <input type="checkbox" style="accent-color:var(--primary);width:15px;height:15px;"/> Remember me
+          </label>
+          <span class="forgot-link" style="margin:0;" onclick="showForgot()">Forgot password?</span>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full btn-lg" id="loginBtn">
+          <span id="loginBtnText">Sign In</span>
+          <span id="loginBtnSpinner" class="hidden" style="width:18px;height:18px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block;"></span>
+        </button>
+
+        <div class="divider-text mt-3 mb-3">
+          <span>or continue with</span>
+        </div>
+
+        <div class="social-login">
+          <button type="button" class="social-btn" onclick="socialLogin('google')">
+            <span>🌐</span> Google
+          </button>
+          <button type="button" class="social-btn" onclick="socialLogin('microsoft')">
+            <span>🏢</span> Microsoft
+          </button>
+        </div>
+
+        <!-- Demo credentials -->
+        <div style="background:rgba(108,99,255,0.06);border:1px solid rgba(108,99,255,0.15);border-radius:10px;padding:12px 14px;font-size:0.78rem;color:var(--text-muted);margin-top:14px;">
+          <strong style="color:var(--primary);">🎯 Demo Credentials:</strong><br/>
+          <div style="margin-top:6px;display:flex;flex-direction:column;gap:4px;">
+            <div style="display:flex;justify-content:space-between;">
+              <span>Admin:</span> <span>admin@notice.com / admin123</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span>Staff:</span> <span>staff@notice.com / staff123</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span>User:</span> <span>user@notice.com / user123</span>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- SIGNUP FORM -->
+      <form id="signupForm" class="hidden" onsubmit="handleSignup(event)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">First Name</label>
+            <input type="text" id="signupFirst" class="form-control" placeholder="John" required/>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">Last Name</label>
+            <input type="text" id="signupLast" class="form-control" placeholder="Doe" required/>
+          </div>
+        </div>
+
+        <div class="form-group mt-3">
+          <label class="form-label">Email Address</label>
+          <div class="input-icon-wrap">
+            <span class="icon">✉️</span>
+            <input type="email" id="signupEmail" class="form-control" placeholder="john@example.com" required/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Department / Organization</label>
+          <div class="input-icon-wrap">
+            <span class="icon">🏢</span>
+            <input type="text" id="signupDept" class="form-control" placeholder="e.g. Computer Science"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Role</label>
+          <div class="role-selector">
+            <div class="role-option" data-role="admin" onclick="selectRole('admin', this)">
+              <span class="role-icon">👑</span> Admin
+            </div>
+            <div class="role-option selected" data-role="staff" onclick="selectRole('staff', this)">
+              <span class="role-icon">👔</span> Staff
+            </div>
+            <div class="role-option" data-role="user" onclick="selectRole('user', this)">
+              <span class="role-icon">👤</span> User
+            </div>
+          </div>
+          <input type="hidden" id="selectedRole" value="staff"/>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="password-wrap">
+            <input type="password" id="signupPassword" class="form-control" placeholder="Create a strong password"
+              oninput="checkStrength(this.value)" required/>
+            <button type="button" class="eye-toggle" onclick="toggleEye('signupPassword', this)">👁️</button>
+          </div>
+          <div class="password-strength" id="strengthMeter">
+            <div class="strength-bar" id="s1"></div>
+            <div class="strength-bar" id="s2"></div>
+            <div class="strength-bar" id="s3"></div>
+            <div class="strength-bar" id="s4"></div>
+            <span class="strength-label" id="strengthLabel">Weak</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <div class="password-wrap">
+            <input type="password" id="signupConfirm" class="form-control" placeholder="Repeat password" required/>
+            <button type="button" class="eye-toggle" onclick="toggleEye('signupConfirm', this)">👁️</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="terms-check">
+            <input type="checkbox" id="termsCheck" required/>
+            <span>I agree to the <a href="#" style="color:var(--primary);">Terms of Service</a> and <a href="#" style="color:var(--primary);">Privacy Policy</a></span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full btn-lg" id="signupBtn">
+          <span id="signupBtnText">Create Account</span>
+          <span id="signupBtnSpinner" class="hidden" style="width:18px;height:18px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;display:inline-block;"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="js/app.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  // Initialize particles
+  initParticles();
+  // Apply saved theme
+  const savedTheme = localStorage.getItem('dnb-theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  document.getElementById('themeToggleAuth').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+  document.getElementById('themeToggleAuth').addEventListener('click', function() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('dnb-theme', next);
+    this.textContent = next === 'dark' ? '☀️' : '🌙';
+  });
+
+  function initParticles() {
+    const container = document.getElementById('authParticles');
+    const colors = ['#6c63ff','#fd79a8','#00cec9','#fdcb6e'];
+    for(let i = 0; i < 15; i++) {
+      const el = document.createElement('div');
+      const size = Math.random() * 60 + 20;
+      el.className = 'particle';
+      el.style.cssText = `
+        width:${size}px;height:${size}px;
+        left:${Math.random()*100}%;
+        top:${Math.random()*100}%;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        opacity:0.04;
+        --dur:${3+Math.random()*5}s;
+        --delay:${Math.random()*3}s;
+        animation-delay:var(--delay);
+        animation-duration:var(--dur);
+      `;
+      container.appendChild(el);
+    }
+  }
+</script>
+</body>
+</html>

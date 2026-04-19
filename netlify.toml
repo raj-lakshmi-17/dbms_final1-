@@ -1,0 +1,10 @@
+# Netlify Configuration for Digital Notice Board
+# This enables single-page routing if you decide to use it later.
+
+[build]
+  publish = "frontend"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
